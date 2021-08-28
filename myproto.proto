@@ -1,0 +1,18 @@
+syntax = "proto2";//指定版本信息，不指定会报错
+//字段格式：限定修饰符① | 数据类型② | 字段名称③ | = | 字段编码值④ | [字段默认值⑤]
+message Person //message为关键字，作用为定义一种消息类型
+{
+    required string name = 1;    //姓名 required表示必须设值 proto3已经不允许required字段，只允许optional、repeated,也没有has_XXX()方法
+    optional int32 id = 2;       //id optional表示可设可不设
+    optional string email = 3;   //邮件 
+    optional string phone1 = 4;  //不写限定符 没有has_XXX()方法 proto2是必须声明的 Expected "required", "optional", or "repeated" in proto2
+    optional string phone = 5 [default = "12345678911"]; //proto2可以设置默认值 proto3不可以
+
+}
+//proto2 不设值 也没有默认值 has_XXX()为false  proto3取消默认值设置，自动默认为空或0，所以has_XXX()就没有了，所以现在大多还是使用proto2
+message AddressBook
+{
+    repeated Person people = 1;//repeated表示数组，所以它有更多的方法
+}
+
+//protoc myproto.proto --cpp_out=.
